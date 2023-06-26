@@ -8,6 +8,21 @@ class HiveServiceProvider extends ChangeNotifier {
   var taskBox = Hive.box('taskBox');
   List<Map<String, dynamic>> taskList = [];
 
+  //Get Data
+  getData() async {
+    var data = taskBox.keys.map((key) {
+      final item = taskBox.get(key);
+      return {
+        'key': key,
+        'title': item['title'],
+        'task': item['task'],
+      };
+    }).toList();
+    taskList = data.reversed.toList();
+    //print('------------Data: $taskList');
+  }
+
+
   //Insert Data
   insertData(Map<String, dynamic> data) async {
     await taskBox.add(data);
@@ -30,20 +45,6 @@ class HiveServiceProvider extends ChangeNotifier {
     getData();
     notifyListeners();
     print('------------Data Deleted-------------');
-  }
-
-  //Get Data
-  getData() async {
-    var data = taskBox.keys.map((key) {
-      final item = taskBox.get(key);
-      return {
-        'key': key,
-        'title': item['title'],
-        'task': item['task'],
-      };
-    }).toList();
-    taskList = data.reversed.toList();
-    //print('------------Data: $taskList');
   }
 
 
